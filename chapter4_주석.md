@@ -175,3 +175,15 @@ if employee.isEligibleForFullBenefits() {	}
 - 너무 많은 정보
 
 - 모호한 정보, 관계
+
+
+
+<br>
+
+추가 정보
+
+https://mingrammer.com/translation-13-simple-rules-for-good-coding/
+
+http://www.moreagile.net/2014/01/comment.html
+
+https://pliss.tistory.com/103
