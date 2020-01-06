@@ -176,6 +176,113 @@
 
 ===
 
-Double-dispatch : https://multifrontgarden.tistory.com/133
+Double-dispatch : https://www.youtube.com/watch?v=s-tXAHub6vg
 
 visitor패턴 : https://kunoo.tistory.com/entry/%ED%96%89%EC%9C%84-%ED%8C%A8%ED%84%B4-Visitor-pattern-%EB%B9%84%EC%A7%80%ED%84%B0-%ED%8C%A8%ED%84%B4
+
+
+### 더블디스패치 예상
+
+맞을지는 모르겠음
+
+#### 1.
+
+```java
+  public class Square{
+    public Point topLeft;
+    public double side;
+  }
+  
+  public class Rectangle{
+    public Point topLeft;
+    public double height;
+    public double width;
+  }
+  
+  public class Geometry{
+    public double area(Object Shape){
+      if(shape instanceof  Square){
+        System.out.println("Square")
+        Square s = (Square)shape;
+        return s.side * s.side;
+      } else if(shape instanceof Rectangle){
+        System.out.println("Rectangle")
+        Rectangle r = (Rectangle)shape;
+        return r.height * r.width;
+      }
+    }
+    
+    //추가된 메서드
+    public double diagonal(Object Shape){
+      if(shape instanceof  Square){
+        System.out.println("Square")
+        Square s = (Square)shape;
+        return Math.sqrt(2) * s.side;
+      } else if(shape instanceof Rectangle){
+        System.out.println("Rectangle")
+        Rectangle r = (Rectangle)shape;
+        return Math.sqrt(r.width * r.width + r.height * r.height);
+      }
+    }
+  }
+```
+
+이 코드를 이렇게 바꾸면
+
+#### 2.
+
+```java
+  public interface Shape{
+    double geometry(Geometry geometry);
+  }
+  
+  public class Square implements Shape{
+    private Point topLeft;
+    private double side;
+    
+    public double geometry(Geometry geometry){
+      System.out.println("Square")
+      return geometry.invoke(this);
+    }
+  }
+  
+  public class Rectangle implements Shape{
+    private Point topLeft;
+    private double height;
+    private double width;
+    
+    public geometry(Geometry geometry){
+      System.out.println("Rectangle")
+      return geometry.invoke(this);
+    }
+  }
+  
+  interface Geometry{
+    double invoke(Square square);
+    double invoke(Rectangle rectangle);
+  }
+  
+  public class Area extens Geometry{
+    public double invoke(Square s){
+        return s.side * s.side;
+    }
+    
+    public double invoke(Rectangle r){
+        return r.height * r.width;
+    }
+  }
+  
+  public class Diagonal extens Geometry{
+    public double invoke(Square s){
+        return Math.sqrt(2) * s.side;
+    }
+    
+    public double invoke(Rectangle r){
+        return Math.sqrt(r.width * r.width + r.height * r.height);
+    }
+  }
+```
+
+1에서의 Geometry클래스에서 메서드가 추가되면, 2에서 Geometry를 구현하는 클래스를 생성.
+
+아몰라
